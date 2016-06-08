@@ -1,5 +1,6 @@
 \documentclass[]{beamer}
 \usepackage{tikz}
+\usepackage{listings}
 
 \usetikzlibrary{shapes.geometric, arrows}
 
@@ -33,8 +34,31 @@
 
 
   \begin{frame}
-    \frametitle{This is the second slide}
-    \framesubtitle{A bit more information about this}
+    \frametitle{Raw data}
+    
+    Raw data can be any source of information that can be processed in
+    a computing device represented in any format. Examples of raw data include:
+    
+    \begin{itemize}
+    \item Text documents
+    \item Chemical compounds (perhaps represented as graphs)
+    \item Usage data (e.g., log files)
+    \item Images
+    \item Speech
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}[containsverbatim]{Loading Raw data in R}
+
+    In this tutorial we will assume that data is given in a
+    ``rectangular format'' where each row depicts an object of
+    interest (a document, a chemical compound or an image) and the
+    columns denote a particular feature.
+    
+    
+    \begin{lstlisting}[language=R]
+      read.table()
+    \end{lstlisting}
   \end{frame}
 
 \end{document}
