@@ -1,0 +1,104 @@
+\documentclass{article}[11pt]
+\usepackage{parskip}
+\begin{document}
+
+
+Lets start R!
+
+\begin{verbatim}
+$ R
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.2.0 (64-bit)
+....
+Type 'q()' to quit R.
+> 
+\end{verbatim}
+
+This will start the R interpreter (the machinery that interprets R code).
+
+Let's now make a simple one dimensional data set - in R a
+\emph{vector} - consisting of a few numbers.
+
+\begin{verbatim}
+> x <- c(10, 20, 30, 40, 50)
+> x -> y
+> y = x
+\end{verbatim}
+
+The standard \emph{assignment operator} in R is \texttt{<-}. You can
+also use the right-pointing version or the equal sign. For most
+practical purposes, prefer the left-pointing assignment operator.
+
+\texttt{c} is a standard R-function for \texttt{c}oncatenating vectors. In our case, we concatenate 5 numbers. Or, really, 5 one-element vectors.
+
+\begin{verbatim}
+> c(x, x, 3, 2, 1, 1:3)
+ [1] 10 20 30 40 50 10 20 30 40 50  3  2  1  1  2  3
+\end{verbatim}
+
+We have now learned one more thing. How to print stuff to the
+console. Writing a variable name, or more specifically - an expression
+- in the interactive console and pressing enter will output the value
+of the expression or variable.
+
+\begin{verbatim}
+> x
+ [1] 10 20 30 40 50
+\end{verbatim}
+
+One can thus use, the R-interpreter as a calculator
+
+\begin{verbatim}
+> 1 + 1
+ [1] 2
+> sqrt(10)
+ [1] 3.162278
+> sqrt(c(1,2,-3))
+ [1] 1.000000 1.414214      NaN
+\end{verbatim}
+
+
+\texttt{NaN} is used to represent the result of undefined numbers,
+such as the square-root of a negative number. There are also
+\texttt{Inf} and \texttt{-Inf}, which represents positive and negative infinity.
+
+Try!
+
+
+\begin{verbatim}
+> -exp(1)**10000
+ [1] -Inf
+> 1/0
+ [1] Inf
+> 1 < -Inf
+ [1] FALSE
+> 1 < Inf
+ [1] TRUE
+> 1 < NaN
+ [1] NA
+\end{verbatim}
+
+A new constant appeared. \texttt{NA} is used to represent the absence
+of value. Similar to \texttt{null} in Java or \texttt{None} in python.
+
+Note that many of the built in functions in R are designed to cope
+with \texttt{NA}-values. For example, \texttt{NA+1} results in
+\texttt{NA}.
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

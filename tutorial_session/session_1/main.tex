@@ -1,0 +1,212 @@
+\documentclass[]{beamer}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{lmodern}
+
+\usetikzlibrary{shapes.geometric, arrows}
+\lstset{
+  language={R},
+  basicstyle=\ttfamily\small
+}
+
+
+%% The style for the flow chart
+\tikzstyle{process} = [rectangle, text width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\begin{document}
+
+\begin{frame}
+  \frametitle{Why programming in a data mining class?}
+ 
+  \begin{block}{No two data challanges are alike}
+    \begin{itemize}[<+->]
+    \item Different sources (web, images, documents)
+    \item Custom implementations (of the shelf solutions are not
+      enough)
+    \item Presentation is never the same (document, support system,
+      images)
+    \item Repeatable
+    \end{itemize}  
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{What programming language to choose?}
+  
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Generic languages}
+        \begin{itemize}
+        \item Java 
+        \item C/C++
+        \item .NET 
+        \item Fortran
+        \item Python 
+        \item Lua
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Specialized langauges}
+        \begin{itemize}
+        \item SPSS
+        \item Matlab
+        \item Octave
+        \item GNU/S or R
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}  
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Why use R?}
+
+  R is Free (as in freedom and gratis) and widely accepted
+
+  \begin{itemize}
+  \item (pros) Public domain implementation
+  \item (pros) Simple to use
+  \item (pros) R has the best plots.
+  \item (pros) Great environment (save/load)
+  \item (pros) Mixed object oriented and functional
+  \item (cons) R is slow
+  \item (cons) R is weird
+  \item (cons) R is slow
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why use R?}
+  
+  \begin{itemize}
+  \item R is polymorphic, which means that a function (say
+    \texttt{plot}) can be applied to many objects (say a
+    \texttt{matrix}, \texttt{list} or \texttt{song}) and produce a
+    particular output depending on the input.
+
+  \item R is object oriented, meaning that multiple properties of an
+    object can be grouped, e.g., a function for producing a linear
+    model can output a single linear regression object, containing the
+    parameters and e.g., residuals and standard error.
+    
+  \item R is functional, with many functions applicable to sets of
+    items, or single elements (e.g., \texttt{lapply(list(1:10, 2:20), median)})
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{How to run R?}
+  Download and install in a way that is suitable for your platform.
+
+  \begin{itemize}
+  \item \textbf{For GNU/Linux}, use your package manager
+    (\texttt{apt}, \texttt{yum}, etc.) and install R (and possibly
+    R-studio).
+
+  \item \textbf{For Windows}, download a suitable R-installer from
+    \url{http://r-project.org} and R-studio from
+    \url{http://rstudio.com}.
+
+  \item \textbf{For Mac}, download and install R using homebrew, and/or
+    R-studio from \url{http://rstudio.com}.
+
+    
+  \item (For the tech-savvy, install Emacs Speak Statistics for a
+    great environment.)
+
+  \end{itemize}
+\end{frame}
+
+%   \begin{frame}{Statistical analysis value chain}
+%     \begin{center}
+%       \begin{figure}
+%         \centering
+%         \begin{tikzpicture}[scale=0.7,  transform shape, node distance=2cm]
+%           \node (raw)  [process]                {Raw data}; %
+%           \node (tech) [process, below of=raw]  {Technically Correct Data}; %
+%           \node (cons) [process, below of=tech] {Consistent Data};  %
+%           \node (stat) [process, below of=cons] {Statistical Results}; %
+%           \node (form) [process, below of=stat] {Formatted  Output}; %
+          
+%           %% Connections
+%           \draw [arrow] (raw)  -- node[anchor=west] {Type checking, normalizing, data types}   (tech); %
+%           \draw [arrow] (tech) -- node[anchor=west] {Fix types, impute, remove, compute}       (cons); %
+%           \draw [arrow] (cons) -- node[anchor=west] {Estimate, derive, analyze}                (stat); %
+%           \draw [arrow] (stat) -- node[anchor=west] {Plot, tabulate, present}                  (form); %
+%         \end{tikzpicture}
+%         \caption{Statistical analysis value chain (adapted from \cite{})}
+%       \end{figure}
+%     \end{center}
+%   \end{frame}
+
+
+%   \begin{frame}
+%     \frametitle{Raw data}
+    
+%     Raw data can be any source of information that can be processed in
+%     a computing device represented in any format. Examples of raw data include:
+    
+%     \begin{itemize}
+%     \item Text documents
+%     \item Chemical compounds (perhaps represented as graphs)
+%     \item Usage data (e.g., log files)
+%     \item Images
+%     \item Speech
+%     \end{itemize}
+%   \end{frame}
+
+%   \begin{frame}{From Raw data to Technically Correct Data}
+
+%     \begin{block}{A dataset}
+%       In this tutorial we will assume that data is given in a
+%       ``rectangular format'' where each \textbf{row} depicts a
+%       \emph{real world object} of interest (a document, a chemical
+%       compound or an image) and the \textbf{columns} denote a \emph{particular
+%         variable}.      
+%     \end{block}
+
+
+%     \begin{block}{Technically correct data}
+%       Data is technically correct if each value
+%       \begin{enumerate}
+%       \item can be directly identified as belonging to a particular
+%         category of values (e.g., number, date)
+%       \item each value is stored in a data type that represents the
+%         domain of a real-world variable
+%       \end{enumerate}
+
+%       Texts are stored as texts, numbers as numbers, dates as dates,
+%       time as time etc.
+%     \end{block}
+%   \end{frame}
+
+%   \begin{frame}<handout:0>
+%     \frametitle{A dataset in R}
+%     \begin{center}
+%       Example 1
+%     \end{center}
+%   \end{frame}
+
+%   \begin{frame}<beamer:0>[containsverbatim]
+%     \frametitle{A dataset in R (Example 1)}
+% \begin{lstlisting}[language=R]
+% > dataset <- data.frame("x" = c(10, 20, 30), 
+%                         "y" = c("a", "b", "c"))
+%    x y
+% 1 10 a
+% 2 20 b
+% 3 30 c
+% \end{lstlisting}
+%   \end{frame}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
