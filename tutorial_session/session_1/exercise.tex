@@ -1,5 +1,6 @@
 \documentclass{article}[11pt]
 \usepackage{parskip}
+\usepackage[utf8]{inputenc}
 \begin{document}
 
 
@@ -21,7 +22,7 @@ Let's now make a simple one dimensional data set - in R a
 \emph{vector} - consisting of a few numbers.
 
 \begin{verbatim}
-> x <- c(10, 20, 30, 40, 50)
+> x <- c(10, 20, 30, 40, 50
 > x -> y
 > y = x
 \end{verbatim}
@@ -40,7 +41,9 @@ practical purposes, prefer the left-pointing assignment operator.
 We have now learned one more thing. How to print stuff to the
 console. Writing a variable name, or more specifically - an expression
 - in the interactive console and pressing enter will output the value
-of the expression or variable.
+of the expression or variable. Note that the \texttt{[1]} here denotes
+the first element index of the line (and yes - in R indexing starts
+with 1 and not 0).
 
 \begin{verbatim}
 > x
@@ -65,7 +68,6 @@ such as the square-root of a negative number. There are also
 
 Try!
 
-
 \begin{verbatim}
 > -exp(1)**10000
  [1] -Inf
@@ -87,6 +89,411 @@ with \texttt{NA}-values. For example, \texttt{NA+1} results in
 \texttt{NA}.
 
 
+Going back to our old vector \texttt{x}, we can get the individual
+items using the \texttt{[]} operator.
+
+\begin{verbatim}
+> x[3]
+ [1] 30
+\end{verbatim}
+
+We can find the \texttt{mean} and \texttt{median} of the vector
+
+\begin{verbatim}
+> mean(x)
+ [1] 30
+> median(x)
+ [1] 30
+> x.mean <- mean(x) # save the mean
+\end{verbatim}
+
+Here, note that we are using \texttt{\#} to denote comments.
+
+Remember, the main advantage of R is for data processing. For
+learning, R provides a list of educational datasets. We can list them
+with the \texttt{data()} function.
+
+\begin{verbatim}
+> data()
+....
+\end{verbatim}
+
+Here, you will enter a \texttt{less}-like environment, where you can
+scroll up with your arrow keys. You quit by entering \texttt{q}.
+
+Lets try one of them.
+
+\begin{verbatim}
+> Nile
+Time Series:
+Start = 1871 
+End = 1970 
+Frequency = 1 
+  [1] 1120 1160  963 1210 1160 1160  813 1230 1370 1140  995  935 1110  994 1020
+ [16]  960 1180  799  958 1140 1100 1210 1150 1250 1260 1220 1030 1100  774  840
+ [31]  874  694  940  833  701  916  692 1020 1050  969  831  726  456  824  702
+ [46] 1120 1100  832  764  821  768  845  864  862  698  845  744  796 1040  759
+ [61]  781  865  845  944  984  897  822 1010  771  676  649  846  812  742  801
+ [76] 1040  860  874  848  890  744  749  838 1050  918  986  797  923  975  815
+ [91] 1020  906  901 1170  912  746  919  718  714  740
+\end{verbatim}
+
+As we can see, we are dealing with a time series. Lets figure out the
+mean and the standard deviation.
+
+\begin{verbatim}
+> mean(Nile)
+ [1] 919.35
+> sd(Nile)
+ [1] 169.2275
+\end{verbatim}
+
+We can also plot a histogram.
+
+\begin{verbatim}
+> hist(Nile)
+\end{verbatim}
+
+You can now quit R.
+
+\begin{verbatim}
+> q()
+Save workspace image? [y/n/c]: 
+\end{verbatim}
+
+It gives you the option to store an image of your current R-session,
+with variables and such stored for later which can be useful when
+working on something for extended periods of time. However, be careful
+and try to store your scripts in files.
+
+
+In many cases the interactive mode is fine. However, if larger chunks
+of code needs to be written or if it must be shared among several
+coders, defining code files and functions is necessary. Lets define a
+function for counting positive integers in a vector.
+
+
+\begin{verbatim}
+count.even <- function(x) {
+  c <- 0
+  for (e in x) {
+    if(e %% 2 == 0) {
+       c <- c + 1
+    }
+  }
+
+  return(c)
+}
+\end{verbatim}
+
+First we assign a function to the variable name
+\texttt{count.even}. We start by assigning the initial value to
+\texttt{c}, and for each \texttt{e}lement in the vector \texttt{x}
+check if it is even. If so we increment our counter. Finally we return
+the result.
+
+\subsection*{Data Structures in R}
+
+\begin{description}
+\item[Vector] We have seen that. A series of elements of the same
+  type. In R, these are \texttt{logical}, \texttt{numeric},
+  \texttt{character}. We can convert between them.
+
+\begin{verbatim}
+> as.numeric(c(TRUE, FALSE, NA))
+[1]  1  0 NA
+\end{verbatim}
+\item[List] A list is more akin to an object in Java or Python.
+
+\begin{verbatim}
+> list(a=10, b=20)
+$a
+[1] 10
+
+$b
+[1] 20
+\end{verbatim}. Elements can be accessed by using \texttt{\$}, e.g., \texttt{x\$a}.
+\item[Matrix] A matrix is two-dimensional data structure with rows and
+  columns. Mostly used for linear algebra routines. \texttt{rbind}
+  stands for row-bind and concatenates vectors as rows.
+
+\begin{verbatim}
+> m <- rbind(c(1,2,3), c(3,1,2))
+> m
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    3    1    2
+> m %*% c(1,2,3)
+     [,1]
+[1,]   14
+[2,]   14
+> m * 2
+     [,1] [,2] [,3]
+[1,]    2    4    6
+[2,]    6    2    6
+\end{verbatim}. \texttt{\%*\%} can be used to perform matrix-matrix multiplication and \texttt{*} for elementwise multiplication.
+\item[Data Frame] A data frame is list of vectors as columns. In contrast to a matrix, a data frame can have different types for each column.
+
+\begin{verbatim}
+> ChickWeight
+    weight Time Chick Diet
+1       42    0     1    1
+2       51    2     1    1
+3       59    4     1    1
+4       64    6     1    1
+5       76    8     1    1
+> ChickWeight$Time
+> ChickWeight$Time
+  [1]  0  2  4  6  8
+\end{verbatim}
+\end{description}
+
+\subsection*{Larger example}
+
+In this example we will learn how to load a csv-file and mess around
+with the resulting data frame.
+
+\begin{verbatim}
+> x <- read.table("smoking_data.csv")
+# ... realize error ...
+> x <- read.table("smoking_data.csv", sep=",")
+# ... realize error ...
+> x <- read.table("smoking_data.csv", 
+                  sep=",", 
+                  skip=1, 
+                  col.names=c("age", "smoker", "cancer"))
+> x
+   age smoker cancer
+1   55      0      0
+2   28      0      0
+3   65      1      0
+4   46      0      1
+5   86      1      1
+6   56      1      1
+7   85      0      0
+8   33      0      0
+9   21      1      0
+10  42      1      1
+
+> x <- read.csv("smoking_data.csv") # simpler
+> class(x) # confirm class
+[1] "data.frame"
+> head(x)
+  age smoker cancer
+1  55      0      0
+2  28     NA      0
+3  65      1      0
+4  46      0      1
+5  86      1      1
+6  56      1      1
+
+# .... some cleaning ....
+> x <- na.omit(x) # remove rows with NA-values
+> x$smoker <- as.factor(x$smoker)
+> x$cancer <- as.factor(x$cancer)
+> x$age <- as.numeric(x$age)
+\end{verbatim}
+
+Let us make some plots. For this we need to install a package. This is
+done with the \texttt{install.packages} function. So, lets
+\texttt{install.packages(``ggplot2'')}.
+
+
+\begin{verbatim}
+# one variable discrete
+> ggplot(x, aes(smoker)) + geom_bar()
+
+# one variable continuous
+> ggplot(x, aes(age)) + geom_dotplot()
+> ggplot(x, aes(age)) + geom_density()
+
+# two variables, factor and continuous
+> ggplot(x, aes(x=smoker, y=age)) + geom_boxplot()
+\end{verbatim}
+
+In this example, \texttt{aes} stands for aesthetics. ggplot is the
+grammar of graphics. It builds a plot from a few components,
+\textbf{data}, \textbf{geoms} and a \textbf{coordinate system}. In
+this example, data data is our smoker dataset, and maps x to the
+smoker column. It then adds the visual marks as a bar-plot.
+
+Anyway. Would it not be interesting to see how the age and smoker
+factor affect the probability of getting cancer? This is where the
+logistic regression model enters the stage. It uses some data to
+predict the likelihood of an event.
+
+To do this, we will use the \texttt{glm} function. It takes a formula
+on the form \texttt{response ~ predictor ...}. In our case, we would
+like to predict \texttt{cancer} based on \texttt{age} and
+\texttt{smoker}.
+
+
+\begin{verbatim}
+> m <- glm(cancer ~ age + smoker, family=binomial, data=x)
+> coefficients(m)
+(Intercept)         age     smoker1 
+-1.97939736  0.01568492  1.54928419 
+# raising e to the power of the coefficients give us the odds ratio
+
+> exp(coefficients(m))
+(Intercept)         age     smoker1 
+  0.1381525   1.0158086   4.7080989 
+\end{verbatim}
+
+Thus, in this example we can conclude that higher age gives a $1.015$
+greater odds of having cancer; and smoking $4.7$ times greater odds.
+
+We can also plot various statistics regarding the model using
+\texttt{plot(m)}.
+
+\subsection*{R statements}
+
+
+\begin{verbatim}
+# for loop
+for(x in c(1,2,3)){
+  print(x)
+}
+
+# while loop
+i <- 0
+while(i < 10) {
+  print(i)
+  i <- i+2
+}
+
+# if/else
+a <- 10
+if(a < 10) {
+  print("<")
+} else if(a == 10) {
+  print("=")
+} else {
+  print(">")
+}
+
+# conditions
+1 > 2
+2 < 1
+2 >= 2
+3 <= 10
+TRUE && TRUE
+FALSE || TRUE
+c(TRUE, TRUE) & c(TRUE, FALSE)
+c(TRUE, TRUE) | c(TRUE, FALSE)
+
+# type conversions
+str(c(1,2,3))
+as.logical(c(1,0,10))
+\end{verbatim}
+
+Functions are objects.
+
+\begin{verbatim}
+> f <- function(a) return(a*2)
+
+# you don't have to specify return. Last executed statement is returned
+> multiplier <- function(a) function(x) x*a
+> multiplier(10)(2)
+[1] 20
+
+# values are always supplied as copies
+> f <- function(x) { x[1] <- 10 }
+> x <- c(1,2,3)
+> f(x)
+> x
+[1] 1 2 3
+
+# we solve this by reassignment
+> f <- function(x) { x[1] <- 10; return(x) }
+> x <- f(x)
+> x
+[1] 10  2  3
+
+# if we have multiple parameters, return a list
+> f <- function(a, b) { a[1] <- 10; b[1] <- 10; return(list(a=a,b=b))}
+> f(x,x)
+$a
+[1] 10  2  3
+
+$b
+[1] 10  2  3
+
+# default values
+> multiplier <- function(a=2) function(x) x*a
+> multiplier()(10)
+[1] 20
+
+# you can create new operators
+> "%concat%" <- function(a,b, sep=" ") paste(a,b,sep=" ")
+> "hello" %concat% "world"
+[1] "hello world"
+
+> "%conj%" <- function(a,b) c(a,b)
+> 1 %conj% 2 %conj% 3
+[1] 1 2 3
+\end{verbatim}
+
+\subsection*{Input/output}
+
+\begin{verbatim}
+# read from cmd
+> s <- scan()
+1: 10
+2: 
+Read 1 item
+> s
+[1] 10
+
+> s <- readline()
+hello world
+
+# printing
+
+>  print("hello world")
+[1] "hello world"
+
+> cat(1,2,3,"hello", "world")
+1 2 3 hello world
+
+> read.table("smoking_data.csv", sep=",", header=TRUE)
+> read.csv("smoking_data.csv")
+> M <- as.matrix(read.table("smoking_data.csv", sep=",", header=TRUE))
+> t(M) %*% M
+         Age Smoker Cancer
+Age    31201     NA    230
+Smoker    NA     NA     NA
+Cancer   230     NA      4
+\end{verbatim}
+
+\subsection*{Object orient programming}
+
+
+\begin{verbatim}
+# create a class
+> setClass("student", representation(
++                         name="character", 
++                         score="numeric"))
+
+> joe <- new("student", name="Joe", score=1.0)
+> joe
+An object of class "student"
+Slot "name":
+[1] "Joe"
+
+Slot "score":
+[1] 1
+> joe$score 
+Error
+> joe@score
+
+# we can define a new show method
+> setMethod("show", "student", function(self) {
++   cat(self@name, "has score", self@score, "\n")
++ })
+> joe
+Joe has score 1
+\end{verbatim}
 
 
 
