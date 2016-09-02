@@ -93,8 +93,18 @@ Going back to our old vector \texttt{x}, we can get the individual
 items using the \texttt{[]} operator.
 
 \begin{verbatim}
-> x[3]
+> x[3] # square brackets for indexing
  [1] 30
+
+> x <- runif(5,min = 0, max = 20)
+[1]  9.783508 19.945672 12.984764  0.880098 10.158592
+
+> x < 0
+> x[x < 0]
+> x[x < 0] <- NA
+> x[is.na(x)]
+> x[1:10]
+> x[x < 0]
 \end{verbatim}
 
 We can find the \texttt{mean} and \texttt{median} of the vector
@@ -105,6 +115,8 @@ We can find the \texttt{mean} and \texttt{median} of the vector
 > median(x)
  [1] 30
 > x.mean <- mean(x) # save the mean
+> cumsum(x)
+> summary(x)
 \end{verbatim}
 
 Here, note that we are using \texttt{\#} to denote comments.
@@ -166,7 +178,6 @@ with variables and such stored for later which can be useful when
 working on something for extended periods of time. However, be careful
 and try to store your scripts in files.
 
-
 In many cases the interactive mode is fine. However, if larger chunks
 of code needs to be written or if it must be shared among several
 coders, defining code files and functions is necessary. Lets define a
@@ -184,6 +195,16 @@ count.even <- function(x) {
 
   return(c)
 }
+
+count.even.vec <- function(x) {
+  sum(x %% 2 == 0)
+}
+# we can investigate the speed difference using the microbenchmark
+# package. 
+install.packages(microbenchmark)
+library(microbenchmark)
+library(ggplot2)
+autoplot(microbenchmark(count.even(...), count.even.vec(...)))
 \end{verbatim}
 
 First we assign a function to the variable name
@@ -191,6 +212,9 @@ First we assign a function to the variable name
 \texttt{c}, and for each \texttt{e}lement in the vector \texttt{x}
 check if it is even. If so we increment our counter. Finally we return
 the result.
+
+In the second example, we define the function in a vectorized manner,
+which simplifies and speeds it up.
 
 \subsection*{Data Structures in R}
 
@@ -200,6 +224,7 @@ the result.
   \texttt{character}. We can convert between them.
 
 \begin{verbatim}
+> x <- c(1,2,3,4); class(x)
 > as.numeric(c(TRUE, FALSE, NA))
 [1]  1  0 NA
 \end{verbatim}
@@ -279,7 +304,7 @@ with the resulting data frame.
 > class(x) # confirm class
 [1] "data.frame"
 > head(x)
-  age smoker cancer
+  Age Smoker Cancer
 1  55      0      0
 2  28     NA      0
 3  65      1      0
@@ -289,9 +314,9 @@ with the resulting data frame.
 
 # .... some cleaning ....
 > x <- na.omit(x) # remove rows with NA-values
-> x$smoker <- as.factor(x$smoker)
-> x$cancer <- as.factor(x$cancer)
-> x$age <- as.numeric(x$age)
+> x$Smoker <- as.factor(x$Smoker)
+> x$Cancer <- as.factor(x$Cancer)
+> x$Age <- as.numeric(x$Age)
 \end{verbatim}
 
 Let us make some plots. For this we need to install a package. This is
@@ -301,11 +326,12 @@ done with the \texttt{install.packages} function. So, lets
 
 \begin{verbatim}
 # one variable discrete
-> ggplot(x, aes(smoker)) + geom_bar()
+> 
+> ggplot(x, aes(Smoker)) + geom_bar()
 
 # one variable continuous
-> ggplot(x, aes(age)) + geom_dotplot()
-> ggplot(x, aes(age)) + geom_density()
+> ggplot(x, aes(Age)) + geom_dotplot()
+> ggplot(x, aes(Age)) + geom_density()
 
 # two variables, factor and continuous
 > ggplot(x, aes(x=smoker, y=age)) + geom_boxplot()
@@ -314,7 +340,7 @@ done with the \texttt{install.packages} function. So, lets
 In this example, \texttt{aes} stands for aesthetics. ggplot is the
 grammar of graphics. It builds a plot from a few components,
 \textbf{data}, \textbf{geoms} and a \textbf{coordinate system}. In
-this example, data data is our smoker dataset, and maps x to the
+this example, data is our smoker dataset, and maps x to the
 smoker column. It then adds the visual marks as a bar-plot.
 
 Anyway. Would it not be interesting to see how the age and smoker
@@ -323,18 +349,18 @@ logistic regression model enters the stage. It uses some data to
 predict the likelihood of an event.
 
 To do this, we will use the \texttt{glm} function. It takes a formula
-on the form \texttt{response ~ predictor ...}. In our case, we would
-like to predict \texttt{cancer} based on \texttt{age} and
-\texttt{smoker}.
+(read more \texttt{?~}) on the form \texttt{response ~ predictor
+  ...}. In our case, we would like to predict \texttt{Cancer} based on
+\texttt{Age} and \texttt{Smoker}.
 
 
 \begin{verbatim}
-> m <- glm(cancer ~ age + smoker, family=binomial, data=x)
+> m <- glm(Cancer ~ Age + Smoker, family=binomial, data=x)
 > coefficients(m)
 (Intercept)         age     smoker1 
 -1.97939736  0.01568492  1.54928419 
-# raising e to the power of the coefficients give us the odds ratio
 
+# raising e to the power of the coefficients give us the odds ratio
 > exp(coefficients(m))
 (Intercept)         age     smoker1 
   0.1381525   1.0158086   4.7080989 
@@ -347,7 +373,6 @@ We can also plot various statistics regarding the model using
 \texttt{plot(m)}.
 
 \subsection*{R statements}
-
 
 \begin{verbatim}
 # for loop
@@ -496,10 +521,38 @@ Joe has score 1
 \end{verbatim}
 
 
+\subsection*{More examples}
 
+\begin{verbatim}
+> ggplot(diamonds, aes(cut, price)) + geom_boxplot()
+> ggplot(diamonds, aes(color, price)) + geom_boxplot()
+> ggplot(diamonds, aes(clarity, price)) + geom_boxplot()
 
+> ggplot(diamonds, aes(carat, price)) + geom_point()
+> ggplot(diamonds, aes(carat, price)) + geom_point(aes(color=cut))
 
+# The log-transformation is particularly useful here because it makes
+# the pattern linear, and linear patterns are the easiest to work
+# with. Let’s take the next step and remove that strong linear
+# pattern. We first make the pattern explicit by fitting a model:
 
+> diamonds.carat.less <- diamonds[diamonds$carat < 2.5,] # select lower carat
+> diamonds.carat.less$logPrice <- log2(diamonds.carat.less$price)
+> diamonds.carat.less$logCarat <- log2(diamonds.carat.less$carat)
+> ggplot(diamonds, aes(logCarat, logPrice)) + geom_point()
+
+> diamonds.model <- lm(logPrice ~ logCarat, diamonds.carat.less)
+
+> extra.carat <- log2(seq(from=0, to=3, length=10000))
+> predictions = data.frame(
+   price = 2**predict(diamonds.model, data.frame(logCarat=extra.carat)),
+   carat=2**carat
+)
+
+> ggplot(diamonds.carat.less, aes(carat, price))
+   + geom_point() 
+   + geom_line(data=predictions)
+\end{verbatim}
 
 \end{document}
 

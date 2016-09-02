@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+
+\title{DAMI, R exercises}
+
+\begin{document}
+
+\maketitle
+
+
+\subsection*{Load data}
+You have been given a file \texttt{students.csv}. Load this file using
+a suitable R-function.
+
+\noindent \textbf{NOTE:} Before loading the file, make sure you
+understand your working directory. You can investigate your current
+working directory with \texttt{getwd()} and change it with
+\texttt{setwd()}. You can list the files in your working directory
+with \texttt{dir()}.
+
+\subsection*{Explore the data}
+\begin{enumerate}
+\item Use the \texttt{head()} function to view the first rows of your
+  data frame. Play with the \texttt{n}-argument. You can also use the
+  \texttt{tail()} function to view the last rows. Use \texttt{?tail}
+  find the argument used to specify the number of rows shown to the
+  screen. Try the \texttt{names} function. What does it do?
+
+\item You should also summarize each column of the data frame
+  (remember \texttt{\$} is used to select columns). Is there a simpler
+  way?
+
+\item For each column, figure out the \texttt{mean}, \texttt{median},
+  \texttt{quantile} and \texttt{sd} for each column.
+
+\item Use the \texttt{table} function to count the female and male
+  students, e.g., \texttt{table(students\$gender)}. Now using,
+  \texttt{?table}, figure out how to count the number of male and
+  female students in \texttt{stockholm} and \texttt{gothenburg}
+  respectively.
+\end{enumerate}
+\subsection*{Plotting}
+\begin{enumerate}
+\item Plot a histogram of the \texttt{age}-variable (\texttt{hist}),
+  now try and reproduce this plot using \texttt{ggplot2}.
+
+
+ 
+\item Try reproducing the plot obtained by running the following
+  command:
+
+  \noindent\texttt{boxplot(students\$height \textasciitilde
+    students\$gender)}
+  
+  using \texttt{ggplot2} (hint, use \texttt{geom\_boxplot()}). Does
+  the same trend (there is a large difference in height between
+  genders) exist for different campuses?
+
+\item Make a scatter plot of the \texttt{shoesize} vs the
+  \texttt{height}. For example:
+
+  \noindent\texttt{plot(students\$shoesize, students\$height)}. 
+
+  Try reproducing this plot using \texttt{ggplot2} (hint, use
+  \texttt{geom\_point()}). 
+
+  What if we want to differentiate between male and female students in
+  the plot? Use \texttt{plot()} and try to colorize each point
+  according to gender. Try to do the same using \texttt{ggplot}.
+\end{enumerate}
+
+\subsection*{Extract subsets of the data}
+
+Remember the indexing operator \texttt{[]}. For data frames it works as follows:
+
+\begin{verbatim}
+> students[c(1,2)]   # selects the first and second column
+> students[c(1,2), ] # selects the first and second row 
+                     # (note the trailing comma)
+> students[c("height", "gender")] # selects the specified columns
+\end{verbatim}
+
+
+
+\begin{enumerate}
+\item Running \texttt{students[students\$gender == "male"]} will
+  fail. Why is that? Fix the error (hint, we are selecting columns).
+\item Select only male students and store them in a variable called \texttt{students.male}.
+\item Select only female students and store them in a variable called
+  \texttt{students.female}.
+\item Use the manual to understand how the \texttt{which()} function
+  works. Use this function to select male and female students again.
+\item Partition the data frame into two groups, male students whose
+  height is above the median (for male students). And female students
+  who are above the median height (for male students).
+\end{enumerate}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
